@@ -1,0 +1,161 @@
+<div class="page">
+    <a routerLink="/" class="back">← Retour</a>
+  
+    @if (country(); as c) {
+      <section class="hero">
+        <img [src]="c.flag.url_svg" [alt]="c.flag.description || c.names.common" />
+        <div>
+          <h1>{{ c.names.common }}</h1>
+          <p class="muted">{{ c.names.official }}</p>
+          <p class="muted">{{ c.region }}{{ c.subregion ? ' · ' + c.subregion : '' }}</p>
+        </div>
+      </section>
+  
+      <nav class="tabs">
+        @for (t of tabs; track t.id) {
+          <button [class.active]="tab() === t.id" (click)="tab.set(t.id)">{{ t.label }}</button>
+        }
+      </nav>
+  
+      @switch (tab()) {
+        @case ('general') {
+          <section class="stats">
+            <div class="stat"><span>Capitale</span><strong>{{ c.capitals?.[0]?.name || '—' }}</strong></div>
+            <div class="stat"><span>Population</span><strong>{{ c.population | number }}</strong></div>
+            <div class="stat"><span>Superficie</span><strong>{{ c.area.kilometers | number }} km²</strong></div>
+            <div class="stat"><span>Gouvernement</span><strong>{{ c.government_type || '—' }}</strong></div>
+            <div class="stat"><span>Fuseaux horaires</span><strong>{{ c.timezones?.join(', ') || '—' }}</strong></div>
+            <div class="stat"><span>Codes</span><strong>{{ c.codes.alpha_2 }} / {{ c.codes.alpha_3 }}</strong></div>
+            <div class="stat">
+              <span>Langues</span>
+              <strong>
+                @for (l of c.languages; track l.bcp47; let last = $last) {
+                  {{ l.name }}{{ last ? '' : ', ' }}
+                } @empty { — }
+              </strong>
+            </div>
+            <div class="stat">
+              <span>Monnaie</span>
+              <strong>
+                @for (m of c.currencies; track m.code; let last = $last) {
+                  {{ m.name }} ({{ m.symbol }}){{ last ? '' : ', ' }}
+                } @empty { — }
+              </strong>
+            </div>
+          </section>
+  
+          <h3>Localisation</h3>
+          <app-country-map
+            [lat]="c.coordinates.lat"
+            [lng]="c.coordinates.lng"
+            [zoom]="zoomFor(c.area.kilometers)"
+            [pin]="c.capitals?.[0]?.coordinates ?? null"
+            [label]="c.capitals?.[0]?.name ?? c.names.common"
+          />
+  
+          @if (c.borders?.length) {
+            <h3>Pays frontaliers</h3>
+            <div class="chips">
+              @for (b of c.borders; track b) {
+                <a class="chip" [routerLink]="['/country', b]">{{ nameOf(b) }}</a>
+              }
+            </div>
+          }
+  
+          <div class="links">
+            @if (c.links?.google_maps) {
+              <a [href]="c.links!.google_maps" target="_blank" rel="noopener">Google Maps ↗</a>
+            }
+            @if (c.links?.wikipedia) {
+              <a [href]="c.links!.wikipedia" target="_blank" rel="noopener">Wikipedia ↗</a>
+            }
+          </div>
+        }
+  
+        @case ('rankings') {
+          @if (rankings(); as list) {
+            <section class="ranks">
+              @for (r of list; track r.label) {
+                <div class="rank">
+                  <span class="label">{{ r.label }}</span>
+                  @if (r.rank) {
+                    <strong class="pos">#{{ r.rank }} <small>/ {{ r.total }}</small></strong>
+                    <span class="val">{{ r.display }}@if (r.year) { · {{ r.year }} }</span>
+                  } @else {
+                    <strong class="pos">N/D</strong>
+                    <span class="val">Donnée non disponible</span>
+                  }
+                </div>
+              }
+            </section>
+            <p class="muted note">Source : Banque mondiale, dernière année disponible. Rang 1 = valeur la plus élevée.</p>
+          } @else {
+            <p class="muted">Chargement des classements…</p>
+          }
+        }
+  
+        @case ('history') {
+          @if (history(); as h) {
+            <article class="article">
+              <h3>{{ h.title }}</h3>
+              <p class="text">{{ h.text }}</p>
+              <p class="muted src">
+                Source : <a [href]="h.url" target="_blank" rel="noopener">Wikipédia ({{ h.lang === 'fr' ? 'français' : 'anglais' }}) ↗</a>
+              </p>
+            </article>
+          } @else if (history() === null) {
+            <p class="muted soon">Aucun article d’histoire trouvé pour ce pays.</p>
+          } @else {
+            <p class="muted soon">Chargement…</p>
+          }
+        }
+  
+        @case ('religion') {
+          @if (religion(); as r) {
+            <article class="article">
+              <h3>{{ r.title }}</h3>
+              <p class="text">{{ r.text }}</p>
+              <p class="muted src">
+                Source : <a [href]="r.url" target="_blank" rel="noopener">Wikipédia ({{ r.lang === 'fr' ? 'français' : 'anglais' }}) ↗</a>
+              </p>
+            </article>
+          } @else if (religion() === null) {
+            <p class="muted soon">Aucun article sur la religion trouvé pour ce pays.</p>
+          } @else {
+            <p class="muted soon">Chargement…</p>
+          }
+        }
+         
+          @case ('anthem') {
+  <section class="anthem">
+    @if (anthemAudio(); as a) {
+      <div class="player">
+        <strong>🎵 Hymne national</strong>
+        <audio controls preload="none" [src]="a.audioUrl"></audio>
+        <p class="muted src">
+          Enregistrement : <a [href]="a.pageUrl" target="_blank" rel="noopener">{{ a.title }} (Wikimedia Commons) ↗</a>
+        </p>
+      </div>
+    } @else if (anthemAudio() === null) {
+      <p class="muted">Aucun enregistrement trouvé pour ce pays.</p>
+    } @else {
+      <p class="muted">Chargement de l’audio…</p>
+    }
+
+    @if (anthemText(); as t) {
+      <article class="article">
+        <h3>{{ t.title }}</h3>
+        <p class="text">{{ t.text }}</p>
+        <p class="muted src">
+          Source : <a [href]="t.url" target="_blank" rel="noopener">Wikipédia ({{ t.lang === 'fr' ? 'français' : 'anglais' }}) ↗</a>
+        </p>
+      </article>
+    }
+  </section>
+}
+
+      }
+    } @else {
+      <p class="muted">Chargement… ou pays introuvable.</p>
+    }
+  </div>
