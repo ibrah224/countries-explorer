@@ -1,0 +1,32 @@
+<div class="page">
+  @if (current(); as g) {
+    <a class="back" [routerLink]="['/explore', type()]">← {{ title() }}</a>
+    <h1>{{ g.label }}</h1>
+    <p class="muted">{{ g.countries.length }} pays</p>
+
+    <div class="grid">
+      @for (c of g.countries; track c.codes.alpha_3) {
+        <a class="card" [routerLink]="['/country', c.codes.alpha_3]">
+          <img [src]="c.flag.url_svg" [alt]="c.names.common" loading="lazy" />
+          <div class="info">
+            <h2>{{ c.names.common }}</h2>
+            <p class="muted">{{ c.capitals?.[0]?.name || '—' }} · {{ c.population | number }} hab.</p>
+          </div>
+        </a>
+      }
+    </div>
+  } @else {
+    <a class="back" routerLink="/">← Accueil</a>
+    <h1>{{ title() }}</h1>
+    <p class="muted">{{ groups().length }} groupes</p>
+
+    <div class="groups">
+      @for (g of groups(); track g.key) {
+        <a class="group" [routerLink]="['/explore', type()]" [queryParams]="{ g: g.key }">
+          <strong>{{ g.label }}</strong>
+          <span>{{ g.countries.length }} pays</span>
+        </a>
+      }
+    </div>
+  }
+</div>

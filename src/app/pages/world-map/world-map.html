@@ -1,0 +1,16 @@
+
+<main class="page">
+  <a routerLink="/" class="back">← Accueil</a>
+
+  <header>
+    <h1>🗺️ Carte du monde</h1>
+    <p>Explore les pays et clique sur un marqueur pour découvrir sa fiche.</p>
+  </header>
+
+  <div class="map-info">
+    <span>🌍 {{ countries().length }} pays disponibles</span>
+    <span>🔵 Clique sur un marqueur</span>
+  </div>
+
+  <div #map class="world-map"></div>
+</main>

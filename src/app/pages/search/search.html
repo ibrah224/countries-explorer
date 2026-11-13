@@ -1,0 +1,46 @@
+<p>search works!</p>
+
+<main class="page">
+  <a routerLink="/" class="back">← Accueil</a>
+
+  <header>
+    <h1>🔎 Recherche globale</h1>
+    <p>Retrouve facilement les pays du monde.</p>
+  </header>
+
+  <div class="search-box">
+    <span>🔍</span>
+    <input
+      type="search"
+      placeholder="Pays, capitale, région, langue..."
+      [value]="query()"
+      (input)="onSearch($event)"
+    />
+  </div>
+
+  @if (query().trim()) {
+    <p class="count">
+      {{ results().length }} résultat(s)
+    </p>
+
+    <div class="results">
+      @for (c of results(); track c.codes.alpha_3) {
+        <a
+          class="country"
+          [routerLink]="['/country', c.codes.alpha_3]"
+        >
+          <img [src]="c.flag.url_svg" [alt]="c.names.common" />
+          <div>
+            <strong>{{ c.names.common }}</strong>
+            <p>{{ c.capitals?.[0]?.name || '—' }} · {{ c.region }}</p>
+          </div>
+          <span class="arrow">→</span>
+        </a>
+      } @empty {
+        <p class="empty">Aucun pays trouvé.</p>
+      }
+    </div>
+  } @else {
+    <p class="empty">Commence à taper pour rechercher un pays.</p>
+  }
+</main>

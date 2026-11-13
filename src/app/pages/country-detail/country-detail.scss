@@ -100,3 +100,11 @@
   audio { display: block; width: 100%; margin: 0.9rem 0 0.5rem; }
   .src { margin: 0.4rem 0 0; font-size: 0.85rem; a { color: #3b5bdb; } }
 }
+.map-ph {
+  height: 380px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: #e9edf2;
+  color: #667085;
+}

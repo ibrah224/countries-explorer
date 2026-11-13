@@ -1,5 +1,5 @@
 <div class="page">
-    <a routerLink="/" class="back">← Retour</a>
+   <a routerLink="/countries" class="back">← Pays</a>
   
     @if (country(); as c) {
       <section class="hero">
@@ -45,13 +45,17 @@
           </section>
   
           <h3>Localisation</h3>
-          <app-country-map
-            [lat]="c.coordinates.lat"
-            [lng]="c.coordinates.lng"
-            [zoom]="zoomFor(c.area.kilometers)"
-            [pin]="c.capitals?.[0]?.coordinates ?? null"
-            [label]="c.capitals?.[0]?.name ?? c.names.common"
-          />
+          @defer (on viewport) {
+  <app-country-map
+    [lat]="c.coordinates.lat"
+    [lng]="c.coordinates.lng"
+    [zoom]="zoomFor(c.area.kilometers)"
+    [pin]="c.capitals?.[0]?.coordinates ?? null"
+    [label]="c.capitals?.[0]?.name ?? c.names.common"
+  />
+} @placeholder {
+  <div class="map-ph">Chargement de la carte…</div>
+}
   
           @if (c.borders?.length) {
             <h3>Pays frontaliers</h3>

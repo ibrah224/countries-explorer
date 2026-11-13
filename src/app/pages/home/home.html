@@ -1,0 +1,16 @@
+
+<main class="home">
+  <header>
+    <h1>🌍 {{ title }}</h1>
+    <p>{{ subtitle }}</p>
+  </header>
+
+  <nav class="tiles">
+    @for (t of tiles; track t.link) {
+      <a class="tile" [routerLink]="t.link">
+        <span class="icon">{{ t.icon }}</span>
+        <span class="label">{{ t.label }}</span>
+      </a>
+    }
+  </nav>
+</main>

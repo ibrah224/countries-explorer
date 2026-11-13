@@ -1,0 +1,24 @@
+<div class="page">
+  <a class="back" routerLink="/">← Accueil</a>
+  <h1>📊 Faits et records</h1>
+  <p class="muted">Calculés à partir des données de l’application (territoires inclus).</p>
+
+  <div class="grid">
+    @for (f of facts(); track f.title) {
+      <section class="fact">
+        <h2>{{ f.icon }} {{ f.title }}</h2>
+        <ol>
+          @for (r of f.rows; track r.country.codes.alpha_3) {
+            <li>
+              <a [routerLink]="['/country', r.country.codes.alpha_3]">
+                <img [src]="r.country.flag.url_svg" [alt]="r.country.names.common" loading="lazy" />
+                <span class="name">{{ r.country.names.common }}</span>
+                <span class="val">{{ r.value }}</span>
+              </a>
+            </li>
+          }
+        </ol>
+      </section>
+    }
+  </div>
+</div>

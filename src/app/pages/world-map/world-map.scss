@@ -1,0 +1,39 @@
+
+.page {
+  max-width: 1200px;
+  margin: auto;
+  padding: 2rem 1rem;
+}
+
+.back {
+  color: #64748b;
+  text-decoration: none;
+}
+
+header {
+  margin: 2rem 0;
+  text-align: center;
+
+  h1 { color: #172b4d; }
+  p { color: #64748b; }
+}
+
+.map-info {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 1rem;
+  color: #64748b;
+  font-size: .9rem;
+}
+
+.world-map {
+  width: 100%;
+  height: min(65vh, 600px);
+  min-height: 380px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #dce3ed;
+  box-shadow: 0 5px 20px #00000012;
+}

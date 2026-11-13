@@ -1,4 +1,16 @@
+
+<div [attr.dir]="isArabic ? 'rtl' : 'ltr'">
+  <label>{{ translation.t('language') }} :</label>
+  <select [value]="translation.lang()" (change)="changeLanguage($event)">
+    <option value="fr">🇫🇷 Français</option>
+    <option value="en">🇬🇧 English</option>
+    <option value="ar">🇸🇦 العربية</option>
+    <option value="zh">🇨🇳 中文</option>
+  </select>
+</div>
+
 <router-outlet />
+
 <footer class="foot">
-  Données : REST Countries · Banque mondiale · Wikipédia · OpenStreetMap
+  {{ translation.t('footer') }}
 </footer>
