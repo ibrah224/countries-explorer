@@ -1,3 +1,5 @@
+![CI](https://github.com/ibrah224/countries-explorer/actions/workflows/ci.yml/badge.svg)
+
 # 🌍 Countries Explorer
 
 Application web pour **découvrir n'importe quel pays du monde** : fiche d'identité, carte, classements mondiaux, histoire, religion et hymne national, au même endroit.

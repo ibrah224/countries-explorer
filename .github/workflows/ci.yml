@@ -1,0 +1,65 @@
+
+name: Countries Explorer CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  quality-check:
+    name: Tests, qualité et build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run automated tests
+        id: tests
+        run: npm test -- --watch=false
+
+      - name: Check code formatting
+        id: format
+        run: npx prettier --check "src/**/*.{ts,html,scss}"
+
+      - name: Build Angular application
+        id: build
+        run: npm run build
+
+      - name: Generate pipeline report
+        if: always()
+        run: |
+          mkdir -p reports
+          {
+            echo "COUNTRIES EXPLORER - CI REPORT"
+            echo "Date: $(date -u)"
+            echo "Commit: $GITHUB_SHA"
+            echo "Branch: $GITHUB_REF_NAME"
+            echo "Event: $GITHUB_EVENT_NAME"
+            echo "Tests: ${{ steps.tests.outcome }}"
+            echo "Formatting: ${{ steps.format.outcome }}"
+            echo "Build: ${{ steps.build.outcome }}"
+            echo "Workflow: ${{ job.status }}"
+          } > reports/ci-report.txt
+
+      - name: Upload pipeline report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: countries-explorer-ci-report
+          path: reports/ci-report.txt
+          retention-days: 30
