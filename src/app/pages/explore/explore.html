@@ -10,7 +10,9 @@
           <img [src]="c.flag.url_svg" [alt]="c.names.common" loading="lazy" />
           <div class="info">
             <h2>{{ c.names.common }}</h2>
-            <p class="muted">{{ c.capitals?.[0]?.name || '—' }} · {{ c.population | number }} hab.</p>
+            <p class="muted">
+              {{ c.capitals?.[0]?.name || '—' }} · {{ c.population | number }} hab.
+            </p>
           </div>
         </a>
       }

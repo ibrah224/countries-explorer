@@ -29,7 +29,10 @@ export class WikipediaService {
       redirects: '1',
       ...extra,
     }).pipe(
-      map((res: any) => ((res?.query?.pages ?? []) as any[]).find(p => !p.missing && p.extract) ?? null)
+      map(
+        (res: any) =>
+          ((res?.query?.pages ?? []) as any[]).find((p) => !p.missing && p.extract) ?? null,
+      ),
     );
   }
 
@@ -48,23 +51,21 @@ export class WikipediaService {
     }).pipe(
       map((res: any): Article => {
         const p = res?.query?.pages?.[0];
-        return p?.extract
-          ? { title: p.title, text: p.extract, url: p.fullurl, lang: 'fr' }
-          : en;
+        return p?.extract ? { title: p.title, text: p.extract, url: p.fullurl, lang: 'fr' } : en;
       }),
-      catchError(() => of(en))
+      catchError(() => of(en)),
     );
   }
 
   private find(title: string): Observable<Article | null> {
     return this.query({ titles: title }).pipe(
       switchMap((page: any) =>
-        page ? of(page) : this.query({ generator: 'search', gsrsearch: title, gsrlimit: '1' })
+        page ? of(page) : this.query({ generator: 'search', gsrsearch: title, gsrlimit: '1' }),
       ),
       switchMap((page: any): Observable<Article | null> =>
-        page ? this.withFrench(page) : of(null)
+        page ? this.withFrench(page) : of(null),
       ),
-      catchError(() => of(null))
+      catchError(() => of(null)),
     );
   }
 
@@ -76,7 +77,7 @@ export class WikipediaService {
     return this.find(`Religion in ${country}`);
   }
 
-    anthem(country: string): Observable<Article | null> {
+  anthem(country: string): Observable<Article | null> {
     return this.find(`National anthem of ${country}`);
   }
 }

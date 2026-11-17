@@ -1,4 +1,3 @@
-
 <main class="page">
   <a routerLink="/" class="back">← Accueil</a>
 
@@ -13,9 +12,7 @@
 
       <div class="modes">
         @for (m of modes; track m.id) {
-          <button
-            [class.active]="mode() === m.id"
-            (click)="mode.set($any(m.id))">
+          <button [class.active]="mode() === m.id" (click)="mode.set($any(m.id))">
             {{ m.icon }} {{ m.label }}
           </button>
         }
@@ -23,17 +20,15 @@
 
       <h3>Niveau de difficulté</h3>
 
-<div class="modes">
-  @for (d of difficulties; track d.id) {
-    <button
-      [class.active]="difficulty() === d.id"
-      (click)="difficulty.set($any(d.id))">
-      {{ d.label }}
-    </button>
-  }
-</div>
+      <div class="modes">
+        @for (d of difficulties; track d.id) {
+          <button [class.active]="difficulty() === d.id" (click)="difficulty.set($any(d.id))">
+            {{ d.label }}
+          </button>
+        }
+      </div>
 
-<p>10 questions · 15 secondes par question</p>
+      <p>10 questions · 15 secondes par question</p>
       <button class="primary" (click)="start()">Commencer le quiz</button>
     </section>
   } @else if (finished()) {
@@ -71,9 +66,7 @@
           <div [style.width.%]="(index() + 1) * 10"></div>
         </div>
 
-        <div class="timer" [class.danger]="seconds() <= 5">
-          ⏱️ {{ seconds() }} s
-        </div>
+        <div class="timer" [class.danger]="seconds() <= 5">⏱️ {{ seconds() }} s</div>
 
         <h2>{{ current().prompt }}</h2>
 
@@ -87,7 +80,8 @@
               [disabled]="selected() !== null"
               [class.correct]="selected() !== null && option === current().answer"
               [class.wrong]="selected() === option && option !== current().answer"
-              (click)="choose(option)">
+              (click)="choose(option)"
+            >
               {{ option }}
             </button>
           }
@@ -99,10 +93,7 @@
           </p>
         }
 
-        <button
-          class="primary next"
-          [disabled]="selected() === null"
-          (click)="next()">
+        <button class="primary next" [disabled]="selected() === null" (click)="next()">
           {{ index() === total - 1 ? 'Voir le résultat' : 'Question suivante →' }}
         </button>
       </div>

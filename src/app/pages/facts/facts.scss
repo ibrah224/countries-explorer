@@ -1,10 +1,23 @@
-.page { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+}
 
-.back { color: #475467; text-decoration: none; }
-.back:hover { text-decoration: underline; }
+.back {
+  color: #475467;
+  text-decoration: none;
+}
+.back:hover {
+  text-decoration: underline;
+}
 
-h1 { margin: 0.75rem 0 0.25rem; }
-.muted { color: #667085; }
+h1 {
+  margin: 0.75rem 0 0.25rem;
+}
+.muted {
+  color: #667085;
+}
 
 .grid {
   display: grid;
@@ -19,11 +32,23 @@ h1 { margin: 0.75rem 0 0.25rem; }
   padding: 1.1rem 1.3rem;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
 
-  h2 { margin: 0 0 0.75rem; font-size: 1.1rem; }
-  ol { list-style: none; margin: 0; padding: 0; counter-reset: rank; }
+  h2 {
+    margin: 0 0 0.75rem;
+    font-size: 1.1rem;
+  }
+  ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    counter-reset: rank;
+  }
 
-  li { counter-increment: rank; }
-  li + li { border-top: 1px solid #eef0f3; }
+  li {
+    counter-increment: rank;
+  }
+  li + li {
+    border-top: 1px solid #eef0f3;
+  }
 
   a {
     display: flex;
@@ -39,10 +64,25 @@ h1 { margin: 0.75rem 0 0.25rem; }
       color: #98a2b3;
       font-weight: 600;
     }
-    &:hover .name { color: #3b5bdb; }
+    &:hover .name {
+      color: #3b5bdb;
+    }
   }
 
-  img { width: 34px; height: 24px; object-fit: cover; border-radius: 3px; box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1); }
-  .name { flex: 1; font-weight: 500; }
-  .val { color: #475467; font-size: 0.9rem; white-space: nowrap; }
+  img {
+    width: 34px;
+    height: 24px;
+    object-fit: cover;
+    border-radius: 3px;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+  }
+  .name {
+    flex: 1;
+    font-weight: 500;
+  }
+  .val {
+    color: #475467;
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
 }

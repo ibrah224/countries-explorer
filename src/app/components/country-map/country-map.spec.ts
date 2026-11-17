@@ -11,7 +11,12 @@ describe('CountryMap', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(CountryMap);
+
+    fixture.componentRef.setInput('lat', 9.537);
+    fixture.componentRef.setInput('lng', -13.6785);
+
     component = fixture.componentInstance;
+    fixture.detectChanges();
     await fixture.whenStable();
   });
 

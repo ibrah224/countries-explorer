@@ -1,7 +1,11 @@
-
 import {
-  AfterViewInit, Component, ElementRef, OnDestroy,
-  effect, inject, viewChild
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  effect,
+  inject,
+  viewChild,
 } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -22,7 +26,7 @@ export class WorldMap implements AfterViewInit, OnDestroy {
   private host = viewChild.required<ElementRef<HTMLDivElement>>('map');
 
   countries = toSignal(this.service.getAll(), {
-    initialValue: [] as Country[]
+    initialValue: [] as Country[],
   });
 
   private map?: L.Map;
@@ -72,9 +76,7 @@ export class WorldMap implements AfterViewInit, OnDestroy {
         fillOpacity: 0.9,
       })
         .bindTooltip(`${country.flag.emoji} ${country.names.common}`)
-        .on('click', () =>
-          this.router.navigate(['/country', country.codes.alpha_3])
-        )
+        .on('click', () => this.router.navigate(['/country', country.codes.alpha_3]))
         .addTo(this.markers);
     }
   }
