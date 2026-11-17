@@ -19,16 +19,11 @@
   </div>
 
   @if (query().trim()) {
-    <p class="count">
-      {{ results().length }} résultat(s)
-    </p>
+    <p class="count">{{ results().length }} résultat(s)</p>
 
     <div class="results">
       @for (c of results(); track c.codes.alpha_3) {
-        <a
-          class="country"
-          [routerLink]="['/country', c.codes.alpha_3]"
-        >
+        <a class="country" [routerLink]="['/country', c.codes.alpha_3]">
           <img [src]="c.flag.url_svg" [alt]="c.names.common" />
           <div>
             <strong>{{ c.names.common }}</strong>

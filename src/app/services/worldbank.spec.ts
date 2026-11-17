@@ -1,12 +1,16 @@
 import { TestBed } from '@angular/core/testing';
-import { Worldbank } from './worldbank';
+import { provideHttpClient } from '@angular/common/http';
+import { WorldBankService } from './worldbank';
 
-describe('Worldbank', () => {
-  let service: Worldbank;
+describe('WorldBankService', () => {
+  let service: WorldBankService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(Worldbank);
+    TestBed.configureTestingModule({
+      providers: [provideHttpClient()],
+    });
+
+    service = TestBed.inject(WorldBankService);
   });
 
   it('should be created', () => {

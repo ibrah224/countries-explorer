@@ -11,7 +11,11 @@ export interface Ranking {
   year?: string;
 }
 
-interface Row { iso3: string; value: number; year?: string }
+interface Row {
+  iso3: string;
+  value: number;
+  year?: string;
+}
 type Format = 'usd' | 'pct' | 'years' | 'num';
 
 const INDICATORS: { code: string; label: string; format: Format }[] = [
@@ -26,10 +30,14 @@ const compact = new Intl.NumberFormat('fr-FR', { notation: 'compact', maximumFra
 
 function fmt(value: number, format: Format): string {
   switch (format) {
-    case 'usd': return compact.format(value) + ' $';
-    case 'pct': return value.toFixed(1) + ' %';
-    case 'years': return value.toFixed(1) + ' ans';
-    case 'num': return compact.format(value) + ' hab.';
+    case 'usd':
+      return compact.format(value) + ' $';
+    case 'pct':
+      return value.toFixed(1) + ' %';
+    case 'years':
+      return value.toFixed(1) + ' ans';
+    case 'num':
+      return compact.format(value) + ' hab.';
   }
 }
 
@@ -45,13 +53,13 @@ export class WorldBankService {
       const url = `https://api.worldbank.org/v2/country/all/indicator/${code}?format=json&per_page=400&mrnev=1`;
       obs = forkJoin([this.http.get<any>(url), this.countries.getAll()]).pipe(
         map(([res, countries]) => {
-          const valid = new Set(countries.map(c => c.codes.alpha_3));
+          const valid = new Set(countries.map((c) => c.codes.alpha_3));
           return ((res?.[1] ?? []) as any[])
-            .filter(r => r.value !== null && valid.has(r.countryiso3code))
-            .map(r => ({ iso3: r.countryiso3code, value: r.value, year: r.date }) as Row);
+            .filter((r) => r.value !== null && valid.has(r.countryiso3code))
+            .map((r) => ({ iso3: r.countryiso3code, value: r.value, year: r.date }) as Row);
         }),
         catchError(() => of([] as Row[])),
-        shareReplay(1)
+        shareReplay(1),
       );
       this.cache.set(code, obs);
     }
@@ -60,7 +68,7 @@ export class WorldBankService {
 
   private toRanking(label: string, rows: Row[], iso3: string, format: Format): Ranking {
     const sorted = [...rows].sort((a, b) => b.value - a.value);
-    const i = sorted.findIndex(r => r.iso3 === iso3);
+    const i = sorted.findIndex((r) => r.iso3 === iso3);
     return {
       label,
       display: i >= 0 ? fmt(sorted[i].value, format) : null,
@@ -72,18 +80,20 @@ export class WorldBankService {
 
   getRankings(iso3: string): Observable<Ranking[]> {
     const population$ = this.countries.getAll().pipe(
-      map(list =>
+      map((list) =>
         this.toRanking(
           'Population',
-          list.filter(c => c.population > 0).map(c => ({ iso3: c.codes.alpha_3, value: c.population })),
+          list
+            .filter((c) => c.population > 0)
+            .map((c) => ({ iso3: c.codes.alpha_3, value: c.population })),
           iso3,
-          'num'
-        )
-      )
+          'num',
+        ),
+      ),
     );
 
-    const indicators$ = INDICATORS.map(ind =>
-      this.load(ind.code).pipe(map(rows => this.toRanking(ind.label, rows, iso3, ind.format)))
+    const indicators$ = INDICATORS.map((ind) =>
+      this.load(ind.code).pipe(map((rows) => this.toRanking(ind.label, rows, iso3, ind.format))),
     );
 
     return forkJoin([population$, ...indicators$]);

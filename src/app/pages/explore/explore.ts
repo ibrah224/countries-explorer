@@ -32,15 +32,13 @@ export class Explore {
 
   all = toSignal(this.service.getAll(), { initialValue: [] as Country[] });
 
-  type = toSignal(
-    this.route.paramMap.pipe(map(p => (p.get('type') ?? 'regions') as Kind)),
-    { initialValue: 'regions' as Kind }
-  );
+  type = toSignal(this.route.paramMap.pipe(map((p) => (p.get('type') ?? 'regions') as Kind)), {
+    initialValue: 'regions' as Kind,
+  });
 
-  selected = toSignal(
-    this.route.queryParamMap.pipe(map(p => p.get('g'))),
-    { initialValue: null as string | null }
-  );
+  selected = toSignal(this.route.queryParamMap.pipe(map((p) => p.get('g'))), {
+    initialValue: null as string | null,
+  });
 
   title = computed(() => TITLES[this.type()] ?? 'Explorer');
 
@@ -64,7 +62,8 @@ export class Explore {
         }
         case 'languages':
           for (const l of c.languages ?? []) {
-            const label = l.native_name && l.native_name !== l.name ? `${l.name} (${l.native_name})` : l.name;
+            const label =
+              l.native_name && l.native_name !== l.name ? `${l.name} (${l.native_name})` : l.name;
             add(l.name, label, c);
           }
           break;
@@ -77,9 +76,9 @@ export class Explore {
     }
 
     return [...byKey.values()].sort(
-      (a, b) => b.countries.length - a.countries.length || a.label.localeCompare(b.label)
+      (a, b) => b.countries.length - a.countries.length || a.label.localeCompare(b.label),
     );
   });
 
-  current = computed(() => this.groups().find(g => g.key === this.selected()) ?? null);
+  current = computed(() => this.groups().find((g) => g.key === this.selected()) ?? null);
 }

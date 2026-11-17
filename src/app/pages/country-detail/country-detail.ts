@@ -26,54 +26,51 @@ export class CountryDetail {
   private all = toSignal(this.service.getAll(), { initialValue: [] as Country[] });
 
   nameOf(code: string) {
-    return this.all().find(x => x.codes.alpha_3 === code)?.names.common ?? code;
+    return this.all().find((x) => x.codes.alpha_3 === code)?.names.common ?? code;
   }
   country = toSignal(
-    this.route.paramMap.pipe(
-      switchMap(p => this.service.getByCode(p.get('code') ?? ''))
-    )
+    this.route.paramMap.pipe(switchMap((p) => this.service.getByCode(p.get('code') ?? ''))),
   );
 
   rankings = toSignal(
     this.route.paramMap.pipe(
-      switchMap(p => this.wb.getRankings((p.get('code') ?? '').toUpperCase()))
-    )
+      switchMap((p) => this.wb.getRankings((p.get('code') ?? '').toUpperCase())),
+    ),
   );
   history = toSignal<Article | null | undefined>(
     toObservable(this.country).pipe(
-      switchMap(c => (c ? this.wiki.history(c.names.common) : of(undefined)))
-    )
+      switchMap((c) => (c ? this.wiki.history(c.names.common) : of(undefined))),
+    ),
   );
 
   religion = toSignal<Article | null | undefined>(
     toObservable(this.country).pipe(
-      switchMap(c => (c ? this.wiki.religion(c.names.common) : of(undefined)))
-    )
+      switchMap((c) => (c ? this.wiki.religion(c.names.common) : of(undefined))),
+    ),
   );
 
-    private anthemService = inject(AnthemService);
+  private anthemService = inject(AnthemService);
 
   anthemAudio = toSignal<Anthem | null | undefined>(
     toObservable(this.country).pipe(
-      switchMap(c => (c ? this.anthemService.getAnthem(c.names.common) : of(undefined)))
-    )
+      switchMap((c) => (c ? this.anthemService.getAnthem(c.names.common) : of(undefined))),
+    ),
   );
 
   anthemText = toSignal<Article | null | undefined>(
     toObservable(this.country).pipe(
-      switchMap(c => (c ? this.wiki.anthem(c.names.common) : of(undefined)))
-    )
+      switchMap((c) => (c ? this.wiki.anthem(c.names.common) : of(undefined))),
+    ),
   );
 
   tab = signal<Tab>('general');
 
-    tabs: { id: Tab; label: string }[] = [
+  tabs: { id: Tab; label: string }[] = [
     { id: 'general', label: 'Général' },
     { id: 'rankings', label: 'Classements' },
     { id: 'history', label: 'Histoire' },
     { id: 'religion', label: 'Religion' },
     { id: 'anthem', label: 'Hymne' },
-  
   ];
 
   zoomFor(area: number) {

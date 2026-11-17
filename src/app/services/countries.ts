@@ -14,7 +14,7 @@ export class CountriesService {
 
   getByCode(code: string) {
     return this.countries$.pipe(
-      map(list => list.find(c => c.codes.alpha_3 === code.toUpperCase()))
+      map((list) => list.find((c) => c.codes.alpha_3 === code.toUpperCase())),
     );
   }
 }

@@ -1,4 +1,3 @@
-
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TranslationService, Language } from './services/translation';
@@ -17,6 +16,6 @@ export class App {
     this.translation.setLanguage(language);
   }
   get isArabic(): boolean {
-  return this.translation.lang() === 'ar';
-}
+    return this.translation.lang() === 'ar';
+  }
 }

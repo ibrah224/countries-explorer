@@ -1,4 +1,12 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, effect, input, viewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  effect,
+  input,
+  viewChild,
+} from '@angular/core';
 import * as L from 'leaflet';
 
 @Component({
@@ -19,7 +27,13 @@ export class CountryMap implements AfterViewInit, OnDestroy {
 
   constructor() {
     effect(() => {
-      const state = { lat: this.lat(), lng: this.lng(), zoom: this.zoom(), pin: this.pin(), label: this.label() };
+      const state = {
+        lat: this.lat(),
+        lng: this.lng(),
+        zoom: this.zoom(),
+        pin: this.pin(),
+        label: this.label(),
+      };
       if (this.map) this.show(state);
     });
   }
@@ -30,11 +44,23 @@ export class CountryMap implements AfterViewInit, OnDestroy {
       maxZoom: 18,
       attribution: '© OpenStreetMap',
     }).addTo(this.map);
-    this.show({ lat: this.lat(), lng: this.lng(), zoom: this.zoom(), pin: this.pin(), label: this.label() });
+    this.show({
+      lat: this.lat(),
+      lng: this.lng(),
+      zoom: this.zoom(),
+      pin: this.pin(),
+      label: this.label(),
+    });
     setTimeout(() => this.map?.invalidateSize(), 0);
   }
 
-  private show(s: { lat: number; lng: number; zoom: number; pin: { lat: number; lng: number } | null; label: string }) {
+  private show(s: {
+    lat: number;
+    lng: number;
+    zoom: number;
+    pin: { lat: number; lng: number } | null;
+    label: string;
+  }) {
     const map = this.map!;
     map.setView([s.lat, s.lng], s.zoom);
     this.marker?.remove();

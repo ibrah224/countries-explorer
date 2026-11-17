@@ -29,7 +29,7 @@ export class AnthemService {
         return info
           ? { title: title.replace(/^File:/, ''), audioUrl: info.url, pageUrl: info.descriptionurl }
           : null;
-      })
+      }),
     );
   }
 
@@ -42,11 +42,11 @@ export class AnthemService {
     }).pipe(
       map((res: any): string | null => {
         const files: string[] = (res?.query?.pages?.[0]?.images ?? []).map((i: any) => i.title);
-        return files.find(f => AUDIO.test(f) && ANTHEM.test(f) && !PRONUNCIATION.test(f)) ?? null;
+        return files.find((f) => AUDIO.test(f) && ANTHEM.test(f) && !PRONUNCIATION.test(f)) ?? null;
       }),
       switchMap((file: string | null): Observable<Anthem | null> =>
-        file ? this.fileInfo(file) : of(null)
-      )
+        file ? this.fileInfo(file) : of(null),
+      ),
     );
   }
 
@@ -65,7 +65,7 @@ export class AnthemService {
     }).pipe(
       map((res: any): Anthem | null => {
         const pages = ((res?.query?.pages ?? []) as any[]).sort((a, b) => a.index - b.index);
-        const hit = pages.find(p => {
+        const hit = pages.find((p) => {
           const t = String(p.title).toLowerCase();
           const mime = p.imageinfo?.[0]?.mime ?? '';
           const isAudio = mime.startsWith('audio') || mime === 'application/ogg';
@@ -78,16 +78,16 @@ export class AnthemService {
           audioUrl: info.url,
           pageUrl: info.descriptionurl,
         };
-      })
+      }),
     );
   }
 
   getAnthem(country: string): Observable<Anthem | null> {
     return this.fromCountryPage(country).pipe(
       switchMap((a: Anthem | null): Observable<Anthem | null> =>
-        a ? of(a) : this.fromSearch(country)
+        a ? of(a) : this.fromSearch(country),
       ),
-      catchError(() => of(null))
+      catchError(() => of(null)),
     );
   }
 }
